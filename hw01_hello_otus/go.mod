@@ -1,4 +1,4 @@
-module github.com/sabirovruslan/hw01_hello_otus
+module github.com/sabirovruslan/otus-golang/hw01_hello_otus
 
 go 1.15
 
