@@ -1,6 +1,7 @@
 package hw02_unpack_string //nolint:golint,stylecheck
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -23,6 +24,43 @@ func TestUnpack(t *testing.T) {
 			expected: "abccd",
 		},
 		{
+			input:    "",
+			expected: "",
+		},
+		{
+			input:    "aaa0b",
+			expected: "aab",
+		},
+		{
+			input:    "a0a0a0",
+			expected: "",
+		},
+		{
+			input:    "AAa0b",
+			expected: "AAb",
+		},
+		{
+			input:    "AAa0B4",
+			expected: "AABBBB",
+		},
+		{
+			input:    "hh*3m0",
+			expected: "hh***",
+		},
+		{
+			input:    "|",
+			expected: "|",
+		},
+	} {
+		result, err := Unpack(tst.input)
+		require.Equal(t, tst.err, err)
+		require.Equal(t, tst.expected, result)
+	}
+}
+
+func TestUnpackError(t *testing.T) {
+	for _, tst := range [...]test{
+		{
 			input:    "3abc",
 			expected: "",
 			err:      ErrInvalidString,
@@ -37,18 +75,45 @@ func TestUnpack(t *testing.T) {
 			expected: "",
 			err:      ErrInvalidString,
 		},
-		{
-			input:    "",
-			expected: "",
-		},
-		{
-			input:    "aaa0b",
-			expected: "aab",
-		},
 	} {
 		result, err := Unpack(tst.input)
 		require.Equal(t, tst.err, err)
 		require.Equal(t, tst.expected, result)
+	}
+}
+
+func TestTrimLastChar(t *testing.T) {
+	for _, tst := range [...]test{
+		{
+			input:    "bba",
+			expected: "bb",
+		},
+		{
+			input:    "aaaa",
+			expected: "aaa",
+		},
+		{
+			input:    "Ab*",
+			expected: "Ab",
+		},
+		{
+			input:    "4324",
+			expected: "432",
+		},
+		{
+			input:    "1",
+			expected: "",
+		},
+		{
+			input:    "",
+			expected: "",
+		},
+	} {
+		var builder strings.Builder
+		builder.WriteString(tst.input)
+
+		trimLastChar(&builder)
+		require.Equal(t, tst.expected, builder.String())
 	}
 }
 

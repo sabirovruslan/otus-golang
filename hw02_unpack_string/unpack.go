@@ -10,8 +10,8 @@ import (
 var ErrInvalidString = errors.New("invalid string")
 
 func Unpack(input string) (string, error) {
+	var builder strings.Builder
 	prev := ""
-	result := ""
 	for _, s := range input {
 		number, err := strconv.Atoi(string(s))
 
@@ -20,30 +20,29 @@ func Unpack(input string) (string, error) {
 		}
 
 		if number > 0 {
-			result += strings.Repeat(prev, int(s-'0')-1)
+			builder.WriteString(strings.Repeat(prev, int(s-'0')-1))
 			prev = ""
 			continue
 		}
 
 		if number == 0 && err == nil {
-			result = trimLastChar(result)
+			trimLastChar(&builder)
 			prev = ""
 			continue
 		}
 
 		prev = string(s)
-		result += prev
+		builder.WriteRune(s)
 	}
 
-	return result, nil
+	return builder.String(), nil
 }
 
-func trimLastChar(s string) string {
+func trimLastChar(b *strings.Builder) {
+	s := b.String()
 	if len(s) > 0 {
 		_, size := utf8.DecodeLastRuneInString(s)
-
-		return s[:len(s)-size]
+		b.Reset()
+		b.WriteString(s[:len(s)-size])
 	}
-
-	return s
 }
