@@ -15,7 +15,7 @@ func Unpack(input string) (string, error) {
 	for _, s := range input {
 		number, err := strconv.Atoi(string(s))
 
-		if len(prev) <= 0 && err == nil {
+		if len(prev) == 0 && err == nil {
 			return "", ErrInvalidString
 		}
 
