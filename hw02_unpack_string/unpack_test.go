@@ -1,7 +1,6 @@
 package hw02_unpack_string //nolint:golint,stylecheck
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -51,6 +50,10 @@ func TestUnpack(t *testing.T) {
 			input:    "|",
 			expected: "|",
 		},
+		{
+			input:    "aaa1",
+			expected: "aaa",
+		},
 	} {
 		result, err := Unpack(tst.input)
 		require.Equal(t, tst.err, err)
@@ -79,41 +82,6 @@ func TestUnpackError(t *testing.T) {
 		result, err := Unpack(tst.input)
 		require.Equal(t, tst.err, err)
 		require.Equal(t, tst.expected, result)
-	}
-}
-
-func TestTrimLastChar(t *testing.T) {
-	for _, tst := range [...]test{
-		{
-			input:    "bba",
-			expected: "bb",
-		},
-		{
-			input:    "aaaa",
-			expected: "aaa",
-		},
-		{
-			input:    "Ab*",
-			expected: "Ab",
-		},
-		{
-			input:    "4324",
-			expected: "432",
-		},
-		{
-			input:    "1",
-			expected: "",
-		},
-		{
-			input:    "",
-			expected: "",
-		},
-	} {
-		var builder strings.Builder
-		builder.WriteString(tst.input)
-
-		trimLastChar(&builder)
-		require.Equal(t, tst.expected, builder.String())
 	}
 }
 
