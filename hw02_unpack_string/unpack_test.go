@@ -23,6 +23,47 @@ func TestUnpack(t *testing.T) {
 			expected: "abccd",
 		},
 		{
+			input:    "",
+			expected: "",
+		},
+		{
+			input:    "aaa0b",
+			expected: "aab",
+		},
+		{
+			input:    "a0a0a0",
+			expected: "",
+		},
+		{
+			input:    "AAa0b",
+			expected: "AAb",
+		},
+		{
+			input:    "AAa0B4",
+			expected: "AABBBB",
+		},
+		{
+			input:    "hh*3m0",
+			expected: "hh***",
+		},
+		{
+			input:    "|",
+			expected: "|",
+		},
+		{
+			input:    "aaa1",
+			expected: "aaa",
+		},
+	} {
+		result, err := Unpack(tst.input)
+		require.Equal(t, tst.err, err)
+		require.Equal(t, tst.expected, result)
+	}
+}
+
+func TestUnpackError(t *testing.T) {
+	for _, tst := range [...]test{
+		{
 			input:    "3abc",
 			expected: "",
 			err:      ErrInvalidString,
@@ -36,14 +77,6 @@ func TestUnpack(t *testing.T) {
 			input:    "aaa10b",
 			expected: "",
 			err:      ErrInvalidString,
-		},
-		{
-			input:    "",
-			expected: "",
-		},
-		{
-			input:    "aaa0b",
-			expected: "aab",
 		},
 	} {
 		result, err := Unpack(tst.input)
