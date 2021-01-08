@@ -14,16 +14,7 @@ func Top10(value string) []string {
 		return top
 	}
 
-	words := regexp.MustCompile("[ \n\t]").Split(value, -1)
-	var dict = make(map[string]int)
-	for _, s := range words {
-		s = strings.Trim(s, " ")
-		if len(s) == 0 {
-			continue
-		}
-		dict[s]++
-	}
-
+	dict := getWordsByFrequency(value)
 	for k := range dict {
 		top = append(top, k)
 	}
@@ -37,4 +28,19 @@ func Top10(value string) []string {
 	}
 
 	return top
+}
+
+func getWordsByFrequency(value string) map[string]int {
+	words := regexp.MustCompile("[ \n\t]").Split(value, -1)
+
+	var dict = make(map[string]int)
+	for _, s := range words {
+		s = strings.Trim(s, " ")
+		if len(s) == 0 {
+			continue
+		}
+		dict[s]++
+	}
+
+	return dict
 }
