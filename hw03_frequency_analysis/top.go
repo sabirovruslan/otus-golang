@@ -6,28 +6,30 @@ import (
 	"strings"
 )
 
-const topLen = 10
+const (
+	topLen = 10
+)
 
 func Top10(value string) []string {
-	var top = make([]string, 0, topLen)
+	var words = make([]string, 0, topLen)
 	if len(value) == 0 {
-		return top
+		return words
 	}
 
 	dict := getWordsByFrequency(value)
 	for k := range dict {
-		top = append(top, k)
+		words = append(words, k)
 	}
 
-	sort.Slice(top, func(i, j int) bool {
-		return dict[top[i]] > dict[top[j]]
+	sort.Slice(words, func(i, j int) bool {
+		return dict[words[i]] > dict[words[j]]
 	})
 
-	if len(top) > topLen {
-		return top[:topLen]
+	if len(words) > topLen {
+		return words[:topLen]
 	}
 
-	return top
+	return words
 }
 
 func getWordsByFrequency(value string) map[string]int {
