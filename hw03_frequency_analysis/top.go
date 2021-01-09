@@ -1,7 +1,6 @@
 package hw03_frequency_analysis //nolint:golint,stylecheck
 
 import (
-	"regexp"
 	"sort"
 	"strings"
 )
@@ -33,14 +32,10 @@ func Top10(value string) []string {
 }
 
 func getWordsByFrequency(value string) map[string]int {
-	words := regexp.MustCompile("[ \n\t]").Split(value, -1)
+	words := strings.Fields(value)
 
 	var dict = make(map[string]int)
 	for _, s := range words {
-		s = strings.Trim(s, " ")
-		if len(s) == 0 {
-			continue
-		}
 		dict[s]++
 	}
 
