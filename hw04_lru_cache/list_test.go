@@ -14,6 +14,74 @@ func TestEmptyList(t *testing.T) {
 	require.Nil(t, l.Back())
 }
 
+func TestLenList(t *testing.T) {
+	l := NewList()
+
+	for _, v := range []int{1, 2, 3, 4, 5} {
+		l.PushFront(v)
+	}
+	require.Equal(t, 5, l.Len())
+
+	l.Remove(l.Back())
+	l.MoveToFront(l.Front())
+	l.MoveToFront(l.Back())
+	require.Equal(t, 4, l.Len())
+}
+
+func TestGetBack(t *testing.T) {
+	l := NewList()
+	value := "back"
+
+	l.PushBack(value)
+	l.PushBack(0)
+	require.Equal(t, 2, l.Len())
+
+	l.MoveToFront(l.Back())
+	require.Equal(t, value, l.Back().Value.(string))
+}
+
+func TestRemoveByFrontList(t *testing.T) {
+	l := NewList()
+	for _, v := range []string{"", " ", "1", "test"} {
+		l.PushFront(v)
+	}
+	require.Equal(t, 4, l.Len())
+
+	l.Remove(l.Front())
+	l.Remove(l.Front())
+	l.Remove(l.Front())
+	l.Remove(l.Front())
+
+	require.Equal(t, 0, l.Len())
+}
+
+func TestRemoveByBackList(t *testing.T) {
+	l := NewList()
+	for _, v := range []int{1, 2, 2, 4} {
+		l.PushBack(v)
+	}
+	require.Equal(t, 4, l.Len())
+
+	l.Remove(l.Back())
+	l.Remove(l.Back())
+	l.Remove(l.Back())
+	l.Remove(l.Back())
+
+	require.Equal(t, 0, l.Len())
+}
+
+func TestGetFront(t *testing.T) {
+	l := NewList()
+	value := "front"
+
+	l.PushBack(0)
+	l.PushBack(value)
+	require.Equal(t, 2, l.Len())
+
+	l.MoveToFront(l.Back())
+	require.Equal(t, value, l.Front().Value.(string))
+}
+
 func TestComplexList(t *testing.T) {
 	l := NewList()
 

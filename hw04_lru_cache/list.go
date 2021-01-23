@@ -97,6 +97,12 @@ func (l *list) Remove(i *listItem) {
 		return
 	}
 
+	if i.Prev == nil {
+		i.Next.Prev = nil
+		l.tail = i.Next
+		return
+	}
+
 	i.Prev.Next, i.Next.Prev = i.Next, i.Prev
 }
 
@@ -114,4 +120,5 @@ func (l *list) MoveToFront(i *listItem) {
 
 	i.Next, v.Prev = v, i
 	i.Prev = nil
+	l.size++
 }
