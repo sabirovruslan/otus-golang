@@ -82,6 +82,28 @@ func TestGetFront(t *testing.T) {
 	require.Equal(t, value, l.Front().Value.(string))
 }
 
+func TestPushFront(t *testing.T) {
+	l := NewList()
+	v := l.PushFront(100)
+	require.Equal(t, 100, v.Value)
+	require.Equal(t, 100, l.Front().Value)
+
+	v = l.PushFront(200)
+	require.Equal(t, 200, v.Value)
+	require.Equal(t, 200, l.Front().Value)
+}
+
+func TestPushBack(t *testing.T) {
+	l := NewList()
+	v := l.PushBack(100)
+	require.Equal(t, 100, v.Value)
+	require.Equal(t, 100, l.Back().Value)
+
+	v = l.PushBack(200)
+	require.Equal(t, 200, v.Value)
+	require.Equal(t, 200, l.Back().Value)
+}
+
 func TestComplexList(t *testing.T) {
 	l := NewList()
 
