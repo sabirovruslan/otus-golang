@@ -45,8 +45,48 @@ func TestSimpleCache(t *testing.T) {
 	require.Nil(t, val)
 }
 
-func TestLogic(t *testing.T) {
-	t.Run("purge logic", func(t *testing.T) {
-		// Write me
-	})
+func TestExcessCapacity(t *testing.T) {
+	c := NewCache(2)
+
+	c.Set("first", 1)
+	c.Set("second", "test")
+	c.Set("excess", 3)
+
+	_, ok := c.Get("first")
+	require.False(t, ok)
+
+	_, ok = c.Get("second")
+	require.True(t, ok)
+
+	_, ok = c.Get("excess")
+	require.True(t, ok)
+}
+
+func TestFrequencyCrowding(t *testing.T) {
+	c := NewCache(4)
+	for _, i := range []string{"1", "2", "3", "4"} {
+		c.Set(Key(i), i)
+	}
+
+	_, ok := c.Get("1")
+	require.True(t, ok)
+
+	c.Set("5", 5)
+
+	_, ok = c.Get("2")
+	require.False(t, ok)
+}
+
+func TestClearCache(t *testing.T) {
+	c := NewCache(4)
+	for _, i := range []string{"1", "2", "3", "4"} {
+		c.Set(Key(i), i)
+	}
+
+	_, ok := c.Get("1")
+	require.True(t, ok)
+
+	c.Clear()
+	_, ok = c.Get("1")
+	require.False(t, ok)
 }
