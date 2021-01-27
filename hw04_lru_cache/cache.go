@@ -46,7 +46,7 @@ func (l *lruCache) Set(key Key, value interface{}) bool {
 
 func (l *lruCache) Get(key Key) (interface{}, bool) {
 	item, ok := l.items[key]
-	if ok == false {
+	if !ok {
 		return nil, ok
 	}
 
